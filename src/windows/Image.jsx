@@ -17,7 +17,7 @@ const Image = () => {
         <WindowControls target="imgfile" />
         <h2>{name}</h2>
       </div>
-      <div className="p-5 space-y-6 bg-white">
+      <div className="p-5 space-y-6 ">
         {imageUrl ? (
           <div className="w-full">
             <img src={imageUrl} alt={name} className="w-full h-auto rounded" />
