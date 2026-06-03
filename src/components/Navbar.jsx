@@ -8,7 +8,7 @@ function Navbar() {
       <nav>
           <div>
               <img src="/images/logo.svg" alt="logo" />
-              <p className="font-bold">Karthik's Portfolio</p>
+              <p className="font-light">Karthik's Portfolio</p>
               <ul>
                   {
                   navLinks.map((item) => (
@@ -22,11 +22,13 @@ function Navbar() {
               <ul>
                   {navIcons.map((item) => (
                       <li key={item.id}>
-                          <img src={item.img} alt={`icon-${item.id}`} className='icon-hover'/>
+                          <img src={item.img} alt={`icon-${item.id}`} className='icon-hover text-white' />
+                          
                       </li>
                   ))}
               </ul>
-              <time>{dayjs().format("ddd MMM D h:mm A")}</time>
+              <time className="macos">{dayjs().format("ddd MMM D h:mm A")}</time>
+              <time className="ios">{dayjs().format("h:mm A")}</time>
           </div>
     </nav>
   )

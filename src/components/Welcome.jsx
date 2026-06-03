@@ -15,7 +15,7 @@ const renderText = (text, className, baseWeight = 400) => {
       className={`${className}`}
       style={{ fontVariationSettings: `'wght' ${baseWeight}` }}
     >
-      {char == " " ? "\u00A0" : char}
+      {char === " " ? " " : char}
     </span>
   ));
 };
@@ -76,7 +76,7 @@ const Welcome = () => {
         {renderText("Karthik's Portfolio", "text-7xl italic font-georama")}
       </h1>
       <div className="small-screen">
-        <p>This portfolio is designed for desktop/ tablet screens only</p>
+        <p>This is my portfolio. Click over the icons below to access my project or explore the navbar down below!</p>
       </div>
     </section>
   );

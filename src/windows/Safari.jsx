@@ -20,17 +20,19 @@ const Safari = () => {
   const startIndex = currentPage * certificatesPerPage;
   const endIndex = startIndex + certificatesPerPage;
   const displayedAchievements = Achievements.slice(startIndex, endIndex);
+
+  const isMobile = window.innerWidth <= 768;
   return (
     <>
       <div id="window-header">
         <WindowControls target="safari" />
-        <PanelLeft className="ml-10 icon" />
-        <div className="flex items-center gap-1 ml-5">
+        <PanelLeft className={isMobile ? "hidden" : "ml-10 icon"} />
+        <div className={isMobile ? "hidden" : "flex items-center gap-1 ml-5"}>
           <ChevronLeft className="icon" />
           <ChevronRight className="icon " />
         </div>
-        <div className="flex-1 flex-center gap-3">
-          <ShieldHalf className="icon" />
+        <div className={isMobile ? "flex" : "flex-1 flex-center gap-3"}>
+          <ShieldHalf className="icon shield" />
           <div className="search">
             <Search className="icon" />
             <input
@@ -42,21 +44,40 @@ const Safari = () => {
         </div>
         <div className="flex items-center gap-5">
           <Share className="icon" />
-          <Plus className="icon" />
-          <Copy className="icon" />
+          <Plus className="icon plus" />
+          <Copy className="icon copy" />
         </div>
       </div>
       <div className="blog">
-        <h2>Achievements</h2>
-        <div className="space-y-8">
+        <h2
+          className={
+            isMobile
+              ? "text-center text-3xl font-bold text-amber-200 my-10"
+              : "text-xl font-bold text-amber-200 mb-10"
+          }
+        >
+          Achievements
+        </h2>
+        <div className={isMobile ? "" : "space-y-8"}>
           {displayedAchievements.map(
             ({ id, image, title, authority, link }) => (
-              <div key={id} className="blog-post">
-                <div className="col-span-2">
+              <div
+                key={id}
+                className={isMobile ? "" : "grid grid-cols-6 space-x-5"}
+              >
+                <div
+                  className={
+                    isMobile
+                      ? "rounded-md"
+                      : "rounded-md object-contain col-span-2"
+                  }
+                >
                   <img src={image} alt={title} />
                 </div>
-                <div className="content">
-                  <p>{authority}</p>
+                <div className="contents">
+                  <p className={isMobile ? "text-sm text-gray-300" : ""}>
+                    {authority}
+                  </p>
                   <h3>{title}</h3>
                   <a href={image} target="_blank" rel="noopener noreferrer">
                     Check Out the Certificate{" "}
@@ -72,7 +93,7 @@ const Safari = () => {
               disabled={currentPage === 0}
               className="border border-emerald-200 rounded-2xl p-2 cursor-pointer"
             >
-              {'<'} Previous
+              {"<"} Previous
             </button>
             <span className="underline">
               Page {currentPage + 1} of{" "}
@@ -93,7 +114,7 @@ const Safari = () => {
               }
               className="border border-emerald-200 rounded-2xl p-2 cursor-pointer"
             >
-              Next {'>'}
+              Next {">"}
             </button>
           </div>
         </div>

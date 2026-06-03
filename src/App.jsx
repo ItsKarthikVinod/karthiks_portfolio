@@ -8,7 +8,7 @@ gsap.registerPlugin(Draggable);
 
 const App = () => {
   return (
-    <main>
+    <main className="ios-shell">
       <Navbar />
       <Welcome />
       <Dock />

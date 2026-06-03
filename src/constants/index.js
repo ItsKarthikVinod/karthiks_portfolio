@@ -5,12 +5,12 @@ const navLinks = [
     type: "finder",
   },
   {
-    id: 3,
+    id: 2,
     name: "Contact",
     type: "contact",
   },
   {
-    id: 4,
+    id: 3,
     name: "Resume",
     type: "resume",
   },
@@ -66,12 +66,12 @@ const dockApps = [
     icon: "terminal.png",
     canOpen: true,
   },
-  {
-    id: "trash",
-    name: "Archive", // was "Trash"
-    icon: "trash.png",
-    canOpen: false,
-  },
+  // {
+  //   id: "trash",
+  //   name: "Archive", // was "Trash"
+  //   icon: "trash.png",
+  //   canOpen: false,
+  // },
 ];
 
 const Achievements = [
@@ -224,6 +224,8 @@ export {
   photosLinks,
   gallery,
 };
+  
+const isMobile = window.innerWidth <= 768;
 
 const WORK_LOCATION = {
   id: 1,
@@ -265,15 +267,15 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "url",
           href: "https://lifemastery.netlify.app",
-          position: "top-10 right-20",
+          position: isMobile? "top-10": "top-10 right-20",
         },
         {
-          id: 4,
+          id: 3,
           name: "lifemastery_dark.png",
           icon: "/images/image.png",
           kind: "file",
           fileType: "img",
-          position: "top-60 right-90",
+          position: isMobile? "top-60": "top-60 right-90",
           imageUrl: "/images/project-11.png",
         },
         {
@@ -282,7 +284,7 @@ const WORK_LOCATION = {
           icon: "/images/image.png",
           kind: "file",
           fileType: "img",
-          position: "top-30 right-60",
+          position: isMobile?"top-30":"top-30 right-60",
           imageUrl: "/images/project-12.png",
         },
         {
@@ -292,7 +294,7 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "img",
           imageUrl: "/images/logo-1.png",
-          position: "top-60 right-20",
+          position: isMobile? "top-60": "top-60 right-20",
         },
       ],
     },
@@ -303,8 +305,8 @@ const WORK_LOCATION = {
       name: "Monthable",
       icon: "/images/folder.png",
       kind: "folder",
-      position: "top-52 right-80",
-      windowPosition: "top-[20vh] left-7",
+      position: isMobile? "top-52": "top-52 right-80",
+      windowPosition:  "top-[20vh] left-7",
       children: [
         {
           id: 1,
@@ -312,7 +314,7 @@ const WORK_LOCATION = {
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
-          position: "top-5 right-10",
+          position: isMobile?"top-5":"top-5 right-10",
           description: [
             "Developed an interactive browser-based learning application to help users practice and memorize months through a guided typing quiz ",
             "Implemented dynamic DOM manipulation and keyboard event handling for real time letter-card generation and answer validation ",
@@ -329,7 +331,7 @@ const WORK_LOCATION = {
           position: "top-20 left-20",
         },
         {
-          id: 4,
+          id: 3,
           name: "monthable.png",
           icon: "/images/image.png",
           kind: "file",
@@ -371,10 +373,10 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "url",
           href: "https://pixelatedk.vercel.app",
-          position: "top-10 right-20",
+          position: isMobile? "top-10":"top-10 right-20",
         },
         {
-          id: 4,
+          id: 3,
           name: "pixelated-1.png",
           icon: "/images/image.png",
           kind: "file",
@@ -383,7 +385,7 @@ const WORK_LOCATION = {
           imageUrl: "/images/project-31.png",
         },
         {
-          id: 5,
+          id: 4,
           name: "pixelated-2.png",
           icon: "/images/image.png",
           kind: "file",
@@ -418,7 +420,7 @@ const ABOUT_LOCATION = {
       icon: "/images/image.png",
       kind: "file",
       fileType: "img",
-      position: "top-28 right-72",
+      position: isMobile ? "top-28":"top-28 right-72",
       imageUrl: "/images/gal3.png",
     },
     {

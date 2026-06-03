@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Georama:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
+@import "tailwindcss";
+
+html,
+body {
+  width: 100dvw;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-image: url("/images/wallpaper2.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-family: "Georama", sans-serif;
+  color: #fff;
+}
+
+@theme {
+  --font-georama: "Georama", sans-serif;
+  --font-roboto: "Roboto Mono", monospace;
+  --breakpoint-3xl: 1920px;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility col-center {
+  @apply flex flex-col items-center justify-center;
+}
+
+@utility abs-center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@layer base {
+  main {
+    @apply w-dvw h-dvh overflow-hidden;
+  }
+}
+
+@layer components {
+  .icon {
+    @apply p-1 rounded transition-colors duration-200;
+  }
+
+  .icon:hover {
+    @apply bg-gray-200;
+  }
+
+  #window-controls {
+    @apply flex gap-2;
+  }
+
+  #window-controls .close {
+    @apply size-3.5 rounded-full bg-[#ff6157] cursor-pointer hover:bg-[#ff6157]/80;
+  }
+
+  #window-controls .minimize {
+    @apply size-3.5 rounded-full bg-[#ffc030];
+  }
+
+  #window-controls .maximize {
+    @apply size-3.5 rounded-full bg-[#2acb42];
+  }
+
+  #window-header {
+    @apply flex items-center justify-between px-4 py-3 rounded-t-lg bg-gray-900 border-b border-gray-900 select-none text-sm text-gray-400;
+  }
+
+  #home {
+    @apply relative z-0;
+  }
+
+  #home ul li {
+    @apply absolute z-0 select-none flex items-center flex-col;
+  }
+}
