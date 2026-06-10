@@ -165,7 +165,7 @@
   }
 
   /* Make app windows full-screen on small phones */
-  #safari,
+    #safari,
   #terminal,
   #contact,
   #photos,
@@ -185,7 +185,9 @@
     top: 0 !important;
     background: rgba(12, 18, 35, 0.98);
     z-index: 40;
-    overflow: auto;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y !important;
   }
   #window-header {
     border-radius: 0 !important;
@@ -522,4 +524,30 @@
       transform 0.2s ease,
       opacity 0.2s ease;
   }
+  #safari .blog,
+#terminal .techstack {
+  min-height: 100%;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+#safari,
+#terminal,
+#contact,
+#photos,
+#resume,
+#finder,
+#txtfile,
+#imgfile {
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+}
+
+#safari .blog,
+#terminal .techstack {
+  max-height: calc(100vh - 72px);
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+}
 }

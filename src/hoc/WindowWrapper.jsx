@@ -41,16 +41,24 @@ const WindowWrapper = (Component, windowKey) => {
       );
     }, [isOpen]);
 
-    useGSAP(() => {
-      if (isMobile) return;
+    useEffect(() => {
       const el = ref.current;
       if (!el) return;
-      const [instance] = Draggable.create(el, {
+      if (isMobile) return;
+
+      const instance = Draggable.create(el, {
         type: "x,y",
         onPress: () => focusWindow(windowKey),
-      });
-      return () => instance.kill();
-    }, [isMobile]);
+        allowNativeTouchScroll: true,
+        touchAction: "pan-y",
+      })[0];
+
+      return () => {
+        if (instance) {
+          instance.kill();
+        }
+      };
+    }, [focusWindow, isMobile, windowKey]);
 
     useLayoutEffect(() => {
       const el = ref.current;
