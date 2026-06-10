@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Dock, Navbar, Welcome, Home } from "#components";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
@@ -18,41 +18,63 @@ import useLocationStore from "#store/location";
 gsap.registerPlugin(Draggable);
 
 const App = () => {
-  const { windows, closeWindow } = useWindowStore();
+  const { closeWindow } = useWindowStore();
   const { resetActiveLocation } = useLocationStore();
+  const motionHandlerRef = useRef(null);
+  const lastMotionRef = useRef({ x: 0, y: 0, z: 0, time: 0 });
+  const threshold = 20;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    if (!isMobile) return;
+    if (!window.matchMedia("(max-width: 768px)").matches) return;
     if (typeof DeviceMotionEvent === "undefined") return;
 
     const resetHome = () => {
-      Object.keys(windows).forEach((windowKey) => {
-        if (windows[windowKey]?.isOpen) {
-          closeWindow(windowKey);
-        }
-      });
+      closeWindow("finder");
       resetActiveLocation();
     };
 
-    let lastX = null;
-    let lastY = null;
-    let lastZ = null;
-    let lastTime = 0;
-    const threshold = 20;
+    const onMotion = (event) => {
+      const acc = event.accelerationIncludingGravity;
+      if (!acc) return;
 
-    let motionHandler = null;
+      const now = Date.now();
+      const {
+        x: lastX,
+        y: lastY,
+        z: lastZ,
+        time: lastTime,
+      } = lastMotionRef.current;
 
-    const requestPermission = async () => {
-      if (
-        typeof DeviceMotionEvent !== "undefined" &&
-        typeof DeviceMotionEvent.requestPermission === "function"
-      ) {
+      if (lastTime && now - lastTime > 150) {
+        const delta =
+          Math.abs((acc.x ?? 0) - lastX) +
+          Math.abs((acc.y ?? 0) - lastY) +
+          Math.abs((acc.z ?? 0) - lastZ);
+
+        if (delta > threshold) {
+          resetHome();
+        }
+      }
+
+      lastMotionRef.current = {
+        x: acc.x ?? 0,
+        y: acc.y ?? 0,
+        z: acc.z ?? 0,
+        time: now,
+      };
+    };
+
+    const startMotionListener = () => {
+      motionHandlerRef.current = onMotion;
+      window.addEventListener("devicemotion", onMotion);
+    };
+
+    const requestMotionPermission = async () => {
+      if (typeof DeviceMotionEvent.requestPermission === "function") {
         try {
           const permission = await DeviceMotionEvent.requestPermission();
-          return permission === "granted";
+          if (permission !== "granted") return false;
         } catch {
           return false;
         }
@@ -60,40 +82,29 @@ const App = () => {
       return true;
     };
 
-    requestPermission().then((granted) => {
-      if (!granted) return;
-
-      motionHandler = (event) => {
-        const acc = event.accelerationIncludingGravity;
-        if (!acc) return;
-
-        const now = Date.now();
-        if (lastTime && now - lastTime > 150) {
-          const delta =
-            Math.abs(acc.x - lastX) +
-            Math.abs(acc.y - lastY) +
-            Math.abs(acc.z - lastZ);
-
-          if (delta > threshold) {
-            resetHome();
-          }
-        }
-
-        lastX = acc.x;
-        lastY = acc.y;
-        lastZ = acc.z;
-        lastTime = now;
-      };
-
-      window.addEventListener("devicemotion", motionHandler);
-    });
-
-    return () => {
-      if (motionHandler) {
-        window.removeEventListener("devicemotion", motionHandler);
+    const initMotion = async () => {
+      const granted = await requestMotionPermission();
+      if (granted) {
+        startMotionListener();
       }
     };
-  }, [closeWindow, resetActiveLocation, windows]);
+
+    if (typeof DeviceMotionEvent.requestPermission === "function") {
+      const touchHandler = async () => {
+        window.removeEventListener("touchstart", touchHandler);
+        await initMotion();
+      };
+      window.addEventListener("touchstart", touchHandler, { once: true });
+    } else {
+      initMotion();
+    }
+
+    return () => {
+      if (motionHandlerRef.current) {
+        window.removeEventListener("devicemotion", motionHandlerRef.current);
+      }
+    };
+  }, [closeWindow, resetActiveLocation]);
 
   return (
     <main className="ios-shell">
